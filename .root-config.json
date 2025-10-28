@@ -119,10 +119,10 @@
       "billBeforeWeekendEnabled": false,
       "billingFrequency": "monthly",
       "consecutiveFailedPaymentsAllowed": 4,
-      "currency": "GBP",
+      "currency": "ZAR",
       "enableBillingOnSandbox": false,
       "paymentSubmissionLeadTime": 0,
-      "clientStatementReference": "<set_reference>",
+      "clientStatementReference": "DINOSURE",
       "combineProRataAndPremium": {
         "enabled": true,
         "daysBeforeBilling": 5
@@ -130,7 +130,7 @@
       "paymentMethodTypes": {
         "debitOrders": {
           "enabled": true,
-          "strategy": null,
+          "strategy": "best_effort",
           "naedoPoliciesInArrears": false,
           "assumeSuccess": {
             "enabled": true,
@@ -161,13 +161,13 @@
       },
       "retryFailedPayments": {
         "enabled": true,
-        "daysBetweenRetries": 5,
-        "numberOfRetries": 1
+        "daysBetweenRetries": 0,
+        "numberOfRetries": 0
       },
       "proRataBilling": {
         "enabled": true,
-        "proRataBillingOnIssue": false,
-        "minimumAmount": 1000
+        "proRataBillingOnIssue": true,
+        "minimumAmount": 10000
       },
       "doNotBlockPaymentMethodFailureCodes": {
         "enabled": false,
