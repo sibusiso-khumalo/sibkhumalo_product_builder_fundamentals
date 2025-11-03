@@ -1,5 +1,5 @@
 /**
- * QUOTE HOOK
+ * QUOTE HOOK - J'Mari asked me to write a quote hook for Dino Protection.
  */
 
 /**
