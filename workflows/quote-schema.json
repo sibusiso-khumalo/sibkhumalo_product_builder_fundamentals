@@ -1,10 +1,40 @@
 [
-  {
+  {/*	Q1 The policy start date must be provided, and it must fall within the next 60 days from quote creation.*/
+    "key": "policy_start_date",
+    "type": "date-picker",
+    "label": "Policy start date *",
+    "outputPath": "policy_start_date",
+    "validators": [
+      {
+          "validation": {
+            "type": "required"
+          }
+      },
+      {
+      "validation": {
+        "type": "minDate",
+        "value": "today",
+        "message": "Policy start date cannot be in the past."
+        }
+      },
+      {
+      "validation": {
+        "type": "maxDate",
+        "value": {
+          "relativeTo": "today",
+          "days": 60
+        },
+        "message": "Policy start date must be within 60 days from today."
+        }
+      }
+    ]
+  },
+  {/*	Q2 The cover amount (sum insured) must be provided, and it must fall between R10,000.00 and R100,000.00 inclusive. **/
     "key": "cover_amount",
     "type": "currency",
     "label": "Death benefit cover amount *",
     "props": {
-      "prefix": "£"
+      "prefix": "R"
     },
     "outputPath": "cover_amount",
     "validators": [
@@ -15,23 +45,23 @@
       },
       {
         "validation": {
-          "min": 10000000,
+          "min": 1000000,
           "type": "greaterThanCurrency"
         }
       },
       {
         "validation": {
-          "max": 500000000,
+          "max": 10000000,
           "type": "lessThanCurrency"
         }
       }
     ]
   },
-  {
-    "key": "age",
+  {/* Q3The year of birth of the dinosaur must be provided. The date of birth must be within 50 years of the current year (in the past). **/
+    "key": "year_of_birth",
     "type": "number",
-    "label": "Age *",
-    "outputPath": "age",
+    "label": "Birth year *",
+    "outputPath": "year_of_birth",
     "validators": [
       {
         "validation": {
@@ -39,34 +69,48 @@
         }
       },
       {
-        "validation": {
-          "min": 18,
-          "type": "greaterThanNumber"
-        }
+      "validation": {
+        "type": "min",
+        "value": 1976,
+        "message": "Year of birth must be within the last 50 years."
+      }
       },
       {
         "validation": {
-          "max": 63,
-          "type": "lessThanNumber"
+          "type": "max",
+          "value": 2026,
+          "message": "Year of birth cannot be in the future."
         }
       }
-    ]
+  ]
   },
-  {
-    "key": "cardio_fitness_level",
+  {/* Q4The dinosaur species must be one of the following [Tyrannosaurus Rex, Stegosaurus, Velociraptor, Diplodocus, Iguanodon].*/
+    "key": "dinosaur_species",
     "type": "select",
-    "label": "Cardio fitness level *",
+    "label": "Dinosaur species *",
     "options": [
       {
-        "label": "Couch Potato",
-        "value": "couch potato"
+        "label": "Tyrannosaurus Rex",
+        "value": "tyrannosaurus_rex"
       },
       {
-        "label": "Marathon Runner",
-        "value": "marathon runner"
+        "label": "Stegosaurus",
+        "value": "stegosaurus"
+      },
+      {
+        "label": "Velociraptor",
+        "value": "velociraptor"
+      },
+      {
+        "label": "Diplodocus",
+        "value": "diplodocus"
+      },
+      {
+        "label": "Iguanodon",
+        "value": "iguanodon"
       }
     ],
-    "outputPath": "cardio_fitness_level",
+    "outputPath": "dinosaur_species",
     "validators": [
       {
         "validation": {
@@ -75,11 +119,11 @@
       }
     ]
   },
-  {
-    "key": "smoker",
+  {/* Q5 The policyholder must indicate whether the dinosaur’s health checks are up to date.*/
+    "key": "dinosaur_health_checks",
     "type": "checkbox",
-    "label": "Smoker",
-    "outputPath": "smoker",
+    "label": "Dinosaur health checks up to date?",
+    "outputPath": "dinosaur_health_checks",
     "validators": [
       {
         "validation": {
@@ -89,11 +133,9 @@
     ],
     "defaultValue": false
   },
-  {
-    "key": "space_1",
-    "type": "blank-space"
-  },
-  {
+  
+  
+ // {/*Additional Benefits*/
     "key": "benefits_heading",
     "type": "section-header",
     "label": "Additional Benefits",
@@ -101,19 +143,20 @@
       "fontWeight": "normal",
       "headingTag": "h4"
     }
-  },
-  {
+  //},
+  //{/*Early warning network benefit*/
     "key": "early_warning_network_benefit",
     "type": "checkbox",
     "label": "Early warning network benefit",
     "outputPath": "early_warning_network_benefit",
     "defaultValue": false
-  },
-  {
+  //},
+  //{/*extraction_benefit*/
     "key": "extraction_benefit",
     "type": "checkbox",
     "label": "Extraction team benefit",
     "outputPath": "extraction_benefit",
     "defaultValue": false
-  }
+  //}
+  
 ]

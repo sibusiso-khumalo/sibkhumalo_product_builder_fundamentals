@@ -8,12 +8,23 @@
  * @return The risk premium
  */
 const calculateRiskPremium = (data) => {
-  const { cover_amount, age, cardio_fitness_level, smoker } = data;
+  const { cover_amount, year_of_birth, dino_species,dino_health_checks} = data;
 
-  const cardioFitnessLevelMultiplier = cardio_fitness_level === 'couch potato' ? 0.5 : 0.1;
-  const smokerMultiplier = smoker ? 1 : 0;
+  const dino_species_factors = {
+  'Tyrannosaurus Rex': 0.81,
+  'Stegosaurus': 1.19,
+  'Velociraptor': 0.76,
+  'Brachiosaurus': 1.32,
+  'Iguanodon': 1.07
+  };
+  
+  const currentYear = new Date().getFullYear();
+  const age = currentYear - year_of_birth;
 
-  const totalRiskPremium = (cover_amount / 10000) * (age / 10 + smokerMultiplier + cardioFitnessLevelMultiplier);
+  const dino_species_Multiplier = dino_species_factors[dino_species] ?? 1;
+  const health_check_add = dino_health_checks === false ? 25000 : 0;
+
+  const totalRiskPremium = (cover_amount) * (0.01*(age*0.001)) * (dino_species_Multiplier) + (health_check_add);
 
   return totalRiskPremium;
 };

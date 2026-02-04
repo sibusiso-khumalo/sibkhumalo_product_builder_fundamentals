@@ -17,16 +17,30 @@ const validateQuoteRequest = (data) => {
     data,
     Joi.object()
       .keys({
+        policy_start_date: Joi.date()
+          .min(new Date())
+          .max(new Date(new Date().setDate(new Date().getDate() + 60)))
+          .required(),
         cover_amount: Joi.number()
           .integer()
-          .min(100000 * 100)
-          .max(5000000 * 100)
+          .min(10000 * 100)
+          .max(100000 * 100)
           .required(),
-        age: Joi.number().integer().min(18).max(63).required(),
-        cardio_fitness_level: Joi.valid(['couch potato', 'marathon runner']).required(),
-        smoker: Joi.boolean().required(),
-        early_warning_network_benefit: Joi.boolean().required(),
-        extraction_benefit: Joi.boolean().required(),
+        year_of_birth: Joi.number()
+          .integer()
+          .min(new Date().getFullYear() - 50)
+          .max(new Date().getFullYear())
+          .required(),  
+        dino_species: Joi.valid(
+          ['Tyrannosaurus Rex', 'Stegosaurus', 'Velociraptor', 'Diplodocus', 'Iguanodon'])
+          .required(),
+        dino_health_checks: Joi.boolean()
+          .required(),
+  //      age: Joi.number().integer().min(18).max(63).required(),
+  //      cardio_fitness_level: Joi.valid(['couch potato', 'marathon runner']).required(),
+  //      smoker: Joi.boolean().required(),
+  //      early_warning_network_benefit: Joi.boolean().required(),
+  //      extraction_benefit: Joi.boolean().required(),
       })
       .required(),
     { abortEarly: false },
@@ -53,24 +67,29 @@ const getQuote = (data) => {
 
   const quotePackage = new QuotePackage({
     // Below are standard fields for all products
-    package_name: 'Dino protection', // The name of the "package" of cover
+    package_name: 'sibusiso_khumalo_product', // The name of the "package" of cover
     sum_assured: data.cover_amount, // Set the total, aggregated cover amount
     base_premium: totalPremium, // Should be an integer, pence
     suggested_premium: totalPremium, // Should be an integer, pence
     billing_frequency: 'monthly', // Can be monthly or yearly
     module: {
       // Save any data, calculations, or results here for future re-use.
+      start_date: data.policy_start_date,
       cover_amount: data.cover_amount,
+      year: data.year_of_birth,
       age: data.age,
-      cardio_fitness_level: data.cardio_fitness_level,
-      smoker: data.smoker,
-      early_warning_network_benefit: data.early_warning_network_benefit,
-      extraction_benefit: data.extraction_benefit,
-      premium_breakdown: {
-        risk_premium: riskPremium,
-        early_warning_network_benefit_premium: earlyWarningNetworkBenefitPremium,
-        extraction_benefit_premium: extractionBenefitPremium,
-      },
+      species: data.dino_species,
+      health_checks: data.dino_health_checks,
+      final_premium: data.totalRiskPremium,
+//      cardio_fitness_level: data.cardio_fitness_level,
+//      smoker: data.smoker,
+//      early_warning_network_benefit: data.early_warning_network_benefit,
+//      extraction_benefit: data.extraction_benefit,
+//      premium_breakdown: {
+//        risk_premium: riskPremium,
+//        early_warning_network_benefit_premium: earlyWarningNetworkBenefitPremium,
+//        extraction_benefit_premium: extractionBenefitPremium,
+//      },
     },
     input_data: { ...data },
   });
