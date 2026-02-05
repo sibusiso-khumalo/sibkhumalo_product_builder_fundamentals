@@ -28,13 +28,13 @@
       {
         "validation": {
           "type": "greaterThanCurrency",
-          "amount": 1000000
+          "number": 1000000
         }
       },
       {
         "validation": {
           "type": "lessThanCurrency",
-          "amount": 10000000
+          "number": 10000000
         }
       }
     ]
@@ -51,13 +51,13 @@
       },
       {
       "validation": {
-        "type": "greaterThanEqualsToLength",
+        "type": "min",
         "number":1976
       }
       },
       {
         "validation": {
-          "type": "lessThanEqualsToLength",
+          "type": "max",
           "number": 2026
         }
       }
