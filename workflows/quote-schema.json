@@ -2,7 +2,7 @@
  
   {
     "key": "policy_start_date",
-    "type": "date-picker",
+    "type": "required",
     "label": "Policy start date *",
     "outputPath": "policy_start_date",
     "validators": [
@@ -13,19 +13,14 @@
       },
       {
       "validation": {
-        "type": "minDate",
-        "value": "today",
-        "message": "Policy start date cannot be in the past."
+        "type": "greaterThanEqualsToLength",
+        "value": 0
         }
       },
       {
       "validation": {
-        "type": "maxDate",
-        "value": {
-          "relativeTo": "today",
-          "days": 60
-        },
-        "message": "Policy start date must be within 60 days from today."
+        "type": "lessThanEqualsToLength",
+        "value": 60
         }
       }
     ]
@@ -71,16 +66,14 @@
       },
       {
       "validation": {
-        "type": "min",
-        "value": 1976,
-        "message": "Year of birth must be within the last 50 years."
+        "type": "greaterThanEqualsToLength",
+        "value": 1976
       }
       },
       {
         "validation": {
-          "type": "max",
-          "value": 2026,
-          "message": "Year of birth cannot be in the future."
+          "type": "lessThanEqualsToLength",
+          "value": 2026
         }
       }
   ]
