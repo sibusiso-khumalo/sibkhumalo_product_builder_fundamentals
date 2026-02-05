@@ -4,7 +4,6 @@
   "productModuleKey": "sibusiso_khumalo_product",
   "organizationId": "6b4ef3e7-b750-4b52-8585-7986fb7cfca4",
   "host": "https://sandbox.momentum.rootprivatestack.com",
-  "stack": "root-node-24",
   "codeFileOrder": [
     "main.js",
     "00-helpers.js",
@@ -135,7 +134,8 @@
           "assumeSuccess": {
             "enabled": true,
             "daysAfterPaymentDate": 5
-          }
+          },
+          "disablePaymentCreationForKeys": []
         },
         "card": {
           "enabled": false,
@@ -155,12 +155,13 @@
           "assumeSuccess": {
             "enabled": true,
             "daysAfterPaymentDate": 5
-          }
+          },
+          "disablePaymentCreationForKeys": []
         },
         "collectionModules": []
       },
       "retryFailedPayments": {
-        "enabled": true,
+        "enabled": false,
         "daysBetweenRetries": 0,
         "numberOfRetries": 0
       },
@@ -179,6 +180,7 @@
     }
   },
   "alterationHooks": [],
+  "applicationAlterationHooks": [],
   "scheduledFunctions": [],
   "fulfillmentTypes": [
     {

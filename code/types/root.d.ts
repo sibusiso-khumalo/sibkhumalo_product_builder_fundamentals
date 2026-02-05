@@ -293,6 +293,11 @@ class ApplicationWithoutConstructor {
   billing_frequency?: 'yearly' | 'monthly' | 'once_off';
 
   /**
+   * Must be an integer between 1 and 31. The day of the month on which the policy will be billed.
+   */
+  billing_day?: number;
+
+  /**
    * Custom, product-specific information stored against the application for later reference. Typically, at least the rating factors received at the quote stage (stored in the module object of the quote package) will be carried over and included in the application module.
    */
   module: { [key: string]: any };
@@ -492,6 +497,8 @@ class ReactivationOptionWithoutConstructor {
 interface UpdatePolicyAction {
   name: 'update_policy';
   data: {
+    /** Custom application data stored on the policy. */
+    appData?: { [key: string]: any };
     /** The updated `monthly_premium` in cents. Must be an integer greater or equal to zero. */
     monthlyPremium?: number;
     /** The updated `base_premium` Must be an integer greater or equal to zero. */
@@ -502,8 +509,29 @@ interface UpdatePolicyAction {
     sumAssured?: number;
     /** The updated `billing_day`. Must be an integer between `1` and `31` inclusive. */
     billingDay?: number;
+    /** The updated `billing_month`. Must be an integer between `1` and `12` inclusive. */
+    billingMonth?: number;
+    /** The name of the policy package. */
+    packageName?: string;
+    /** The policy start date. */
+    startDate?: Moment;
+    /** The policy end date. Set to `null` to clear. */
+    endDate?: Moment | null;
+    /** The policy number. */
+    policyNumber?: string;
     /** This will replace the entire module object on the policy. */
-    module?: Record<string, any>;
+    module?: {
+      type: string;
+      [key: string]: any;
+    };
+    /** The end date for lapse and NTU prevention. Set to `null` to clear. */
+    lapseAndNTUPreventionEndDate?: Moment | null;
+    /** The start date for lapse and NTU prevention. */
+    lapseAndNTUPreventionStartDate?: Moment | null;
+    /** The reason for lapse and NTU prevention. */
+    lapseAndNTUPreventionReason?: string;
+    /** The reason for resuming lapse and NTU. */
+    lapseAndNTUResumeReason?: string;
   };
 }
 
@@ -1075,8 +1103,300 @@ declare global {
     }
   }
 
-  // Root SDK methods
-  var root: any;
+  // Root SDK types
+  interface RootSDKSendMailParams {
+    /** The email subject line. */
+    subject: string;
+    /** The email body in MJML format. */
+    mjml: string;
+    /** The recipient details. */
+    to: {
+      email: string;
+      name?: string;
+      type?: 'to' | 'cc' | 'bcc';
+    };
+    /** The sender details. */
+    from: {
+      email: string;
+      name?: string;
+    };
+    /** Optional policy ID to link the email to. */
+    policyId?: string;
+  }
+
+  interface RootSDKPaymentFilters {
+    /** Filter by payment statuses. */
+    statuses?: PaymentStatus[];
+    /** Filter payments from this date onwards (ISO date string). */
+    paymentDateFrom?: string;
+  }
+
+  interface RootSDKPagination {
+    /** The maximum number of results to return (max 1000). */
+    limit?: number;
+    /** The number of results to skip. */
+    offset?: number;
+  }
+
+  interface RootSDKPolicyFilters {
+    /** Filter by policy numbers. */
+    policyNumbers?: string[];
+    /** Filter by policyholder identification number. */
+    policyholderIdentificationNumber?: string;
+  }
+
+  interface RootSDKPaymentCouponFilters {
+    /** Filter by payment coupon statuses. */
+    status?: PaymentCouponStatus[];
+    /** Filter by payment coupon types. */
+    type?: PaymentCouponType[];
+    /** Filter coupons redeemable on this date (ISO date string). */
+    redeemableOn?: string;
+    /** Filter coupons expired on this date (ISO date string). */
+    expiredOn?: string;
+    /** Filter coupons updated after this date (ISO date string). */
+    updatedAfter?: string;
+    /** Filter coupons updated before this date (ISO date string). */
+    updatedTo?: string;
+  }
+
+  interface RootSDKPaymentCouponInsert {
+    /** The type of payment coupon: 'payment_holiday' or 'ad_hoc'. */
+    type: PaymentCouponType;
+    /** ISO date. Required if the payment coupon is of type 'payment_holiday'. */
+    redeemableFrom?: string;
+    /** ISO date. Required if the payment coupon is of type 'payment_holiday'. */
+    redeemableTo?: string;
+    /** The amount in cents. Required if the payment coupon is of type 'ad_hoc'. */
+    amount?: number;
+    /** Optional reason for the payment coupon. */
+    reason?: string;
+  }
+
+  interface RootSDKRedeemPaymentCouponAction {
+    /** ISO date. The payment date for redemption. */
+    paymentDate: string;
+    /** ISO date. The billing date for redemption. */
+    billingDate?: string;
+  }
+
+  interface RootSDKPaymentCouponInclude {
+    /** Include the linked policy in the response. */
+    policy?: boolean;
+  }
+
+  interface RootSDKOrganizationUserFilters {
+    /** Search users by name or email. */
+    search?: string;
+    /** Filter users by role ID. */
+    roleId?: string;
+  }
+
+  interface RootSDKOrganizationUser {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    organization_role_id?: string;
+    organization_role_name?: string;
+  }
+
+  interface RootSDKSecretKey {
+    secret_key_id: string;
+    type: string;
+    key: string;
+    created_at: string;
+  }
+
+  interface RootSDKDataStoreEntity {
+    data_store_entity_id: string;
+    key: string;
+    data: Record<string, any>;
+    created_at: string;
+    updated_at: string;
+  }
+
+  type RootSDKCustomNotificationEventType = 'policy' | 'payment' | 'payment_method' | 'claim';
+
+  interface RootSDKPoliciesNamespace {
+    /**
+     * Retrieves a policy by its unique identifier.
+     * @param policyId - The UUID of the policy.
+     * @returns The policy object.
+     */
+    getPolicy(policyId: string): Promise<PlatformPolicy>;
+
+    /**
+     * Retrieves all events for a specific policy.
+     * @param policyId - The UUID of the policy.
+     * @returns An array of policy events.
+     */
+    getPolicyEvents(policyId: string): Promise<any[]>;
+
+    /**
+     * Retrieves policies matching the specified filters.
+     * @param params - Filter and pagination options.
+     * @returns An array of policies.
+     */
+    getPolicies(params: { filters?: RootSDKPolicyFilters; pagination?: RootSDKPagination }): Promise<PlatformPolicy[]>;
+
+    /**
+     * Sends a custom email.
+     * @param data - The email configuration.
+     */
+    sendMail(data: RootSDKSendMailParams): Promise<void>;
+
+    /**
+     * Retrieves payments for a specific policy.
+     * @param policyId - The UUID of the policy.
+     * @param params - Optional filter and pagination options.
+     * @returns An array of payments.
+     */
+    getPolicyPayments(
+      policyId: string,
+      params?: {
+        filters?: RootSDKPaymentFilters;
+        pagination?: RootSDKPagination;
+      },
+    ): Promise<PlatformPayment[]>;
+
+    /**
+     * Counts payments for a specific policy.
+     * @param policyId - The UUID of the policy.
+     * @param params - Optional filter options.
+     * @returns The number of payments.
+     */
+    countPolicyPayments(
+      policyId: string,
+      params?: {
+        filters: RootSDKPaymentFilters;
+      },
+    ): Promise<number>;
+
+    /**
+     * Retrieves payment coupons for a specific policy.
+     * @param params - The query parameters including policyId, filters, includes, and pagination.
+     * @returns An array of payment coupons.
+     */
+    getPaymentCoupons(params: {
+      policyId: string;
+      filters?: RootSDKPaymentCouponFilters;
+      includes?: RootSDKPaymentCouponInclude;
+      pagination?: RootSDKPagination;
+    }): Promise<PlatformPaymentCoupon[]>;
+
+    /**
+     * Creates payment coupons for a specific policy.
+     * @param params - The policy ID and array of payment coupons to create.
+     * @returns An array of created payment coupons.
+     */
+    createPaymentCoupons(params: {
+      policyId: string;
+      newPaymentCoupons: RootSDKPaymentCouponInsert[];
+    }): Promise<PlatformPaymentCoupon[]>;
+
+    /**
+     * Cancels a payment coupon.
+     * @param params - The policy ID and payment coupon ID.
+     * @returns The cancelled payment coupon.
+     */
+    cancelPaymentCoupon(params: { policyId: string; paymentCouponId: string }): Promise<PlatformPaymentCoupon>;
+
+    /**
+     * Redeems a payment coupon.
+     * @param params - The payment coupon ID and redemption action details.
+     * @returns The redeemed payment coupon.
+     */
+    redeemPaymentCoupon(params: {
+      paymentCouponId: string;
+      action: RootSDKRedeemPaymentCouponAction;
+    }): Promise<PlatformPaymentCoupon>;
+
+    /**
+     * Reverses a payment coupon.
+     * @param params - The payment coupon ID to reverse.
+     * @returns The reversed payment coupon.
+     */
+    reversePaymentCoupon(params: { paymentCouponId: string }): Promise<PlatformPaymentCoupon>;
+  }
+
+  interface RootSDKDataStoresNamespace {
+    /**
+     * Access a data store by key.
+     * @param key - The data store key.
+     * @returns An object with methods to query the data store.
+     */
+    store(key: string): {
+      /**
+       * Finds all entities in the data store.
+       * @returns An array of data store entities.
+       */
+      find(): Promise<RootSDKDataStoreEntity[]>;
+    };
+  }
+
+  interface RootSDKNotificationsNamespace {
+    /**
+     * Triggers a custom notification event.
+     * @param params - The event configuration.
+     */
+    triggerCustomEvent(params: {
+      /** The key of the custom notification event to trigger. */
+      customEventKey: string;
+      /** The type of entity the event is for. */
+      customEventType: RootSDKCustomNotificationEventType;
+      /** The UUID of the entity (policy, payment, or claim). */
+      id: string;
+    }): Promise<void>;
+  }
+
+  interface RootSDKSecretKeysNamespace {
+    /**
+     * Retrieves a secret key by its type.
+     * @param params - The secret key type.
+     * @returns The secret key object.
+     */
+    getSecretKeyByType(params: { type: string }): Promise<RootSDKSecretKey>;
+  }
+
+  interface RootSDKOrganizationsNamespace {
+    /**
+     * Retrieves users for the current organization.
+     * @param params - Optional filter and pagination options.
+     * @returns An array of organization users.
+     */
+    getUsers(params?: {
+      filters?: RootSDKOrganizationUserFilters;
+      pagination?: RootSDKPagination;
+    }): Promise<RootSDKOrganizationUser[]>;
+  }
+
+  /**
+   * The Root SDK client provides methods to interact with the Root platform API
+   * from within product module code.
+   *
+   * All methods are asynchronous and return Promises that must be awaited.
+   */
+  interface RootSDKClient {
+    /** Methods for interacting with policies, payments, and related entities. */
+    policies: RootSDKPoliciesNamespace;
+    /** Methods for interacting with data stores. */
+    dataStores: RootSDKDataStoresNamespace;
+    /** Methods for triggering custom notifications. */
+    notifications: RootSDKNotificationsNamespace;
+    /** Methods for retrieving secret keys. */
+    secretKeys: RootSDKSecretKeysNamespace;
+    /** Methods for retrieving organization users. */
+    organizations: RootSDKOrganizationsNamespace;
+  }
+
+  /**
+   * The Root SDK client instance.
+   *
+   * Use this to interact with the Root platform API from within product module code.
+   * All methods are asynchronous and must be awaited.
+   */
+  var root: RootSDKClient;
 
   // Root helpers
   var createUuid: any;
