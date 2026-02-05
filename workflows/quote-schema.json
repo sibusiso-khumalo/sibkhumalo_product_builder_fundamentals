@@ -1,5 +1,6 @@
 [
-  {/*	Q1 The policy start date must be provided, and it must fall within the next 60 days from quote creation.*/
+ 
+  {
     "key": "policy_start_date",
     "type": "date-picker",
     "label": "Policy start date *",
@@ -29,7 +30,7 @@
       }
     ]
   },
-  {/*	Q2 The cover amount (sum insured) must be provided, and it must fall between R10,000.00 and R100,000.00 inclusive. **/
+  {
     "key": "cover_amount",
     "type": "currency",
     "label": "Death benefit cover amount *",
@@ -57,7 +58,7 @@
       }
     ]
   },
-  {/* Q3The year of birth of the dinosaur must be provided. The date of birth must be within 50 years of the current year (in the past). **/
+  {
     "key": "year_of_birth",
     "type": "number",
     "label": "Birth year *",
@@ -84,7 +85,7 @@
       }
   ]
   },
-  {/* Q4The dinosaur species must be one of the following [Tyrannosaurus Rex, Stegosaurus, Velociraptor, Diplodocus, Iguanodon].*/
+  {
     "key": "dinosaur_species",
     "type": "select",
     "label": "Dinosaur species *",
@@ -119,7 +120,7 @@
       }
     ]
   },
-  {/* Q5 The policyholder must indicate whether the dinosaur’s health checks are up to date.*/
+  {
     "key": "dinosaur_health_checks",
     "type": "checkbox",
     "label": "Dinosaur health checks up to date?",
@@ -132,31 +133,6 @@
       }
     ],
     "defaultValue": false
-  },
-  
-  
- // {/*Additional Benefits*/
-    "key": "benefits_heading",
-    "type": "section-header",
-    "label": "Additional Benefits",
-    "props": {
-      "fontWeight": "normal",
-      "headingTag": "h4"
-    }
-  //},
-  //{/*Early warning network benefit*/
-    "key": "early_warning_network_benefit",
-    "type": "checkbox",
-    "label": "Early warning network benefit",
-    "outputPath": "early_warning_network_benefit",
-    "defaultValue": false
-  //},
-  //{/*extraction_benefit*/
-    "key": "extraction_benefit",
-    "type": "checkbox",
-    "label": "Extraction team benefit",
-    "outputPath": "extraction_benefit",
-    "defaultValue": false
-  //}
+  }
   
 ]
