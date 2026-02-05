@@ -1,8 +1,7 @@
 [
  
   {
-    "key": "policy_start_date",
-    "type": "required",
+    "type": "date-picker",
     "label": "Policy start date *",
     "outputPath": "policy_start_date",
     "validators": [
@@ -13,20 +12,17 @@
       },
       {
       "validation": {
-        "type": "greaterThanEqualsToLength",
-        "value": 0
+        "type": "greaterThanEqualsToLength"
         }
       },
       {
       "validation": {
-        "type": "lessThanEqualsToLength",
-        "value": 60
+        "type": "lessThanEqualsToLength"
         }
       }
     ]
   },
   {
-    "key": "cover_amount",
     "type": "currency",
     "label": "Death benefit cover amount *",
     "props": {
@@ -41,20 +37,17 @@
       },
       {
         "validation": {
-          "min": 1000000,
           "type": "greaterThanCurrency"
         }
       },
       {
         "validation": {
-          "max": 10000000,
           "type": "lessThanCurrency"
         }
       }
     ]
   },
   {
-    "key": "year_of_birth",
     "type": "number",
     "label": "Birth year *",
     "outputPath": "year_of_birth",
@@ -66,42 +59,34 @@
       },
       {
       "validation": {
-        "type": "greaterThanEqualsToLength",
-        "value": 1976
+        "type": "greaterThanEqualsToLength"
       }
       },
       {
         "validation": {
-          "type": "lessThanEqualsToLength",
-          "value": 2026
+          "type": "lessThanEqualsToLength"
         }
       }
   ]
   },
   {
-    "key": "dinosaur_species",
     "type": "select",
     "label": "Dinosaur species *",
     "options": [
       {
-        "label": "Tyrannosaurus Rex",
-        "value": "tyrannosaurus_rex"
+        "label": "Tyrannosaurus Rex"
       },
       {
-        "label": "Stegosaurus",
-        "value": "stegosaurus"
+        "label": "Stegosaurus"
       },
       {
-        "label": "Velociraptor",
-        "value": "velociraptor"
+        "label": "Velociraptor"
       },
       {
-        "label": "Diplodocus",
-        "value": "diplodocus"
+        "label": "Diplodocus"
       },
       {
-        "label": "Iguanodon",
-        "value": "iguanodon"
+        "label": "Iguanodon"
       }
     ],
     "outputPath": "dinosaur_species",
@@ -114,7 +99,6 @@
     ]
   },
   {
-    "key": "dinosaur_health_checks",
     "type": "checkbox",
     "label": "Dinosaur health checks up to date?",
     "outputPath": "dinosaur_health_checks",
