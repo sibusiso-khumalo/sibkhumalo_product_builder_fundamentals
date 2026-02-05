@@ -3,12 +3,20 @@
     "type": "date-picker",
     "label": "Policy start date *",
     "outputPath": "policy_start_date",
-    "validators": [ {"validation": {"type": "required"}}]
+    "validators": [
+      {
+        "validation": {
+          "type": "required"
+        }
+      }
+    ]
   },
   {
     "type": "currency",
     "label": "Death benefit cover amount *",
-    "props": {"prefix": "R"},
+    "props": {
+      "prefix": "R"
+    },
     "outputPath": "cover_amount",
     "validators": [
       {
