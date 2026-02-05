@@ -4,39 +4,16 @@
     "type": "date-picker",
     "label": "Policy start date *",
     "outputPath": "policy_start_date",
-    "validators": [
-      {
-          "validation": {
-            "type": "required"
-          }
-      }
-    ]
+    "validators": [ {"validation": { "type": "required" } } ]
   },
   {
     "type": "currency",
     "label": "Death benefit cover amount *",
-    "props": {
-      "prefix": "R"
-    },
+    "props": { "prefix": "R"  },
     "outputPath": "cover_amount",
-    "validators": [
-      {
-        "validation": {
-          "type": "required"
-        }
-      },
-      {
-        "validation": {
-          "type": "greaterThanCurrency",
-          "number": 1000000
-        }
-      },
-      {
-        "validation": {
-          "type": "lessThanCurrency",
-          "number": 10000000
-        }
-      }
+    "validators": [{"validation": {"type": "required" }},
+      {"validation": {"type": "greaterThanCurrency","min": 1000000}},
+      {"validation": {"type": "lessThanCurrency","max": 10000000 } }
     ]
   },
   {
@@ -44,24 +21,10 @@
     "label": "Birth year *",
     "outputPath": "year_of_birth",
     "validators": [
-      {
-        "validation": {
-          "type": "required"
-        }
-      },
-      {
-      "validation": {
-        "type": "min",
-        "number":1976
-      }
-      },
-      {
-        "validation": {
-          "type": "max",
-          "number": 2026
-        }
-      }
-  ]
+      { "validation": { "type": "required" }  },
+      { "validation": { "type": "greaterThanEqualsToNumber","min":1976   } },
+      { "validation": { "type": "lessThanEqualsToNumber","max": 2026     } }
+   ]
   },
   {
     "type": "select",
