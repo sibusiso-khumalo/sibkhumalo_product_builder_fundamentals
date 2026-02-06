@@ -1,5 +1,6 @@
 [
   {
+    "key": "policy_start_date",
     "type": "date-picker",
     "label": "Policy start date *",
     "outputPath": "policy_start_date",
@@ -12,6 +13,7 @@
     ]
   },
   {
+    "key": "cover_amount",
     "type": "currency",
     "label": "Death benefit cover amount *",
     "props": {
@@ -23,22 +25,11 @@
         "validation": {
           "type": "required"
         }
-      },
-      {
-        "validation": {
-          "type": "greaterThanCurrency",
-          "min": 1000000
-        }
-      },
-      {
-        "validation": {
-          "type": "lessThanCurrency",
-          "max": 10000000
-        }
       }
     ]
   },
   {
+    "key": "year_of_birth",
     "type": "number",
     "label": "Birth year *",
     "outputPath": "year_of_birth",
@@ -47,39 +38,33 @@
         "validation": {
           "type": "required"
         }
-      },
-      {
-        "validation": {
-          "type": "greaterThanEqualsToNumber",
-          "min": 1976
-        }
-      },
-      {
-        "validation": {
-          "type": "lessThanEqualsToNumber",
-          "max": 2026
-        }
       }
     ]
   },
   {
+    "key": "dino_species",
     "type": "select",
     "label": "Dinosaur species *",
     "options": [
       {
-        "label": "Tyrannosaurus Rex"
+        "label": "Tyrannosaurus Rex",
+        "value": "Tyrannosaurus Rex"
       },
       {
-        "label": "Stegosaurus"
+        "label": "Stegosaurus",
+        "value": "Stegosaurus"
       },
       {
-        "label": "Velociraptor"
+        "label": "Velociraptor",
+        "value": "Velociraptor"
       },
       {
-        "label": "Diplodocus"
+        "label": "Brachiosaurus",
+        "value": "Brachiosaurus"
       },
       {
-        "label": "Iguanodon"
+        "label": "Iguanodon",
+        "value": "Iguanodon"
       }
     ],
     "outputPath": "dino_species",
@@ -92,9 +77,10 @@
     ]
   },
   {
+    "key": "dino_health_checks",
     "type": "checkbox",
     "label": "Dinosaur health checks up to date?",
-    "outputPath": "dinosaur_health_checks",
+    "outputPath": "dino_health_checks",
     "validators": [
       {
         "validation": {

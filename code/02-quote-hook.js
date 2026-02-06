@@ -32,8 +32,12 @@ const validateQuoteRequest = (data) => {
           .max(new Date().getFullYear())
           .required(),  
         dino_species: Joi.valid(
-          ['Tyrannosaurus Rex', 'Stegosaurus', 'Velociraptor', 'Diplodocus', 'Iguanodon'])
-          .required(),
+          'Tyrannosaurus Rex', 
+          'Stegosaurus', 
+          'Velociraptor', 
+          'Brachiosaurus', 
+          'Iguanodon'
+        ).required(),
         dino_health_checks: Joi.boolean()
           .required(),
   //      age: Joi.number().integer().min(18).max(63).required(),
@@ -60,10 +64,10 @@ const getQuote = (data) => {
   // using `data`, hardcoded rating tables, data stores, or external services/APIs
 
   const riskPremium = Math.round(calculateRiskPremium(data));
-  const earlyWarningNetworkBenefitPremium = Math.round(calculateEarlyWarningNetworkBenefitPremium(data));
-  const extractionBenefitPremium = Math.round(calculateExtractionBenefitPremium(data));
+  //const earlyWarningNetworkBenefitPremium = Math.round(calculateEarlyWarningNetworkBenefitPremium(data));
+  //const extractionBenefitPremium = Math.round(calculateExtractionBenefitPremium(data));
 
-  const totalPremium = riskPremium + earlyWarningNetworkBenefitPremium + extractionBenefitPremium;
+  const totalPremium = riskPremium //+ earlyWarningNetworkBenefitPremium + extractionBenefitPremium;
 
   const quotePackage = new QuotePackage({
     // Below are standard fields for all products

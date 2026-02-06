@@ -5,14 +5,15 @@
  * ensuring that the unit tests are not executed in production.
  */
 
+
+
 describe('getQuote', function () {
   const quoteData = {
-    cover_amount: 200000 * 100,
-    age: 30,
-    cardio_fitness_level: 'couch potato',
-    smoker: false,
-    early_warning_network_benefit: true,
-    extraction_benefit: false,
+    policy_start_date: '2026-03-01',
+    cover_amount: 65000 * 100,
+    year_of_birth: 2010,
+    dino_species: 'Brachiosaurus',
+    dino_health_checks: true,
   };
 
   it('should pass quote data validation for correct data', function () {
@@ -20,9 +21,9 @@ describe('getQuote', function () {
     expect(validation.error).to.equal(null);
   });
 
-  it('should return a suggested premium of £73.00 (in pence)', function () {
+  it('should return a suggested premium of R1368 (cents)', function () {
     const quotePackage = getQuote(quoteData)[0];
 
-    expect(quotePackage.suggested_premium).to.equal(7300); // pence
+    expect(quotePackage.suggested_premium).to.equal(1373); // cents
   });
 });
